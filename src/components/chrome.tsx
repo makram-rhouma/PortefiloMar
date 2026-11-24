@@ -9,35 +9,32 @@ import { Icon } from './ui'
 
 export function Crown({ className = 'w-8' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="var(--color-gold)" aria-hidden>
-      <path d="M12 1.5l3 6.4 7 .8-5.2 4.8 1.4 6.9L12 17l-6.2 3.4 1.4-6.9L2 8.7l7-.8z" />
+    <svg viewBox="0 0 48 32" className={className} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" aria-hidden>
+      <path d="M5 28 3 7l11 9 10-13 10 13 11-9-2 21z" /><circle cx="3" cy="6" r="2" fill="currentColor" /><circle cx="24" cy="2.5" r="2" fill="currentColor" /><circle cx="45" cy="6" r="2" fill="currentColor" />
     </svg>
   )
 }
 
-/** Brush signature "Meriem Jaballah": revealed like a pen stroke. */
+/** Script signature "Meriem Jaballah", revealed like a pen stroke. */
 export function Signature({ className = '', stacked = false }: { className?: string; stacked?: boolean }) {
   const reduce = useReducedMotion()
   const reveal = (delay: number) => (reduce ? {} : {
     initial: { clipPath: 'inset(-40% 100% -40% -10%)' }, animate: { clipPath: 'inset(-40% -10% -40% -10%)' },
-    transition: { duration: 1.1, ease: ease.inOut, delay },
+    transition: { duration: 1.2, ease: ease.inOut, delay },
   })
   return (
-    <p dir="ltr" aria-label="Meriem Jaballah" className={`font-script leading-[1] ${stacked ? 'flex flex-col' : 'flex flex-wrap items-baseline gap-x-[.25em]'} ${className}`}>
-      <motion.span aria-hidden className="text-cream" {...reveal(0.2)}>Meriem</motion.span>
-      <motion.span aria-hidden className="text-gold" {...reveal(0.8)}>Jaballah</motion.span>
+    <p dir="ltr" aria-label="Meriem Jaballah" className={`font-script leading-[.85] text-cream drop-shadow-[0_6px_24px_rgb(0_0_0/.6)] ${stacked ? 'flex flex-col' : 'flex flex-wrap items-baseline gap-x-[.22em]'} ${className}`}>
+      <motion.span aria-hidden {...reveal(0.2)}>Meriem</motion.span>
+      <motion.span aria-hidden className={stacked ? 'ps-[.9em]' : ''} {...reveal(0.8)}>Jaballah</motion.span>
     </p>
   )
 }
 
 export function Logo({ className = '' }: { className?: string }) {
   return (
-    <a href="#top" aria-label="Meriem Jaballah — home" className={`inline-flex min-h-11 items-center gap-3 ${className}`} dir="ltr">
-      <span className="relative font-script text-4xl leading-none">
-        <span className="text-magenta">M</span><span className="-ms-1 text-lilac">J</span>
-        <Crown className="absolute -end-2 -top-1 w-3.5" />
-      </span>
-      <span className="font-sans text-[15px] font-bold uppercase leading-[1.05] tracking-wide text-cream">Meriem<br />Jaballah</span>
+    <a href="/#top" aria-label="Meriem Jaballah — home" className={`relative inline-flex min-h-11 items-center gap-2 text-cream ${className}`} dir="ltr">
+      <span className="relative font-script text-5xl leading-none">MJ<Crown className="absolute -end-3 -top-2 w-5 text-cream" /></span>
+      <span className="font-script text-2xl leading-[.9]">Meriem<br />Jaballah</span>
     </a>
   )
 }
@@ -59,8 +56,8 @@ export function Loader() {
         <motion.div role="status" aria-label={t('loader.label')} className="hero-bg fixed inset-0 z-[100] grid place-items-center"
           exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: dur.slow, ease: ease.inOut }}>
           <div className="grid place-items-center gap-2">
-            <svg viewBox="0 0 24 24" className="w-14" fill="none" stroke="var(--color-gold)" strokeWidth="1.4" strokeLinejoin="round">
-              <motion.path d="M12 1.5l3 6.4 7 .8-5.2 4.8 1.4 6.9L12 17l-6.2 3.4 1.4-6.9L2 8.7l7-.8z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, ease: ease.inOut }} />
+            <svg viewBox="0 0 48 32" className="w-20" fill="none" stroke="#9a031e" strokeWidth="2" strokeLinejoin="round">
+              <motion.path d="M5 28 3 7l11 9 10-13 10 13 11-9-2 21z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, ease: ease.inOut }} />
             </svg>
             <Signature className="text-5xl" />
           </div>
@@ -72,10 +69,10 @@ export function Loader() {
 
 export const NAV: { id: string; key: Key }[] = [
   { id: 'top', key: 'nav.home' }, { id: 'about', key: 'nav.about' }, { id: 'journey', key: 'nav.experience' },
-  { id: 'activities', key: 'nav.activities' }, { id: 'gallery', key: 'nav.gallery' }, { id: 'contact', key: 'nav.contact' },
+  { id: 'activities', key: 'nav.activities' }, { id: 'gallery', key: 'nav.gallery' }, { id: 'reels', key: 'nav.reels' },
+  { id: 'reviews', key: 'nav.reviews' }, { id: 'contact', key: 'nav.contact' },
 ]
 
-/** Tracks which section crosses the middle of the viewport. */
 export function useActiveSection(ids: string[], map: (id: string) => string = (x) => x) {
   const [active, setActive] = useState(ids[0])
   useEffect(() => {
@@ -102,7 +99,7 @@ export function LangMenu({ up = false }: { up?: boolean }) {
   return (
     <div ref={ref} className="relative">
       <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-haspopup="true" aria-label={t('nav.language')}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-cream/20 bg-ink/40 px-4 text-sm font-semibold backdrop-blur hover:border-cream/50">
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-magenta/70 bg-ink/40 px-4 text-sm font-semibold backdrop-blur hover:border-magenta">
         <Globe className="size-4" aria-hidden />{lang.toUpperCase()}<ChevronDown className={`size-4 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden />
       </button>
       <AnimatePresence>
@@ -127,7 +124,7 @@ export function LangSwitch() {
     <div role="group" aria-label={t('nav.language')} className="grid grid-cols-4 gap-1 rounded-full border border-cream/15 p-1">
       {LANGS.map((l) => (
         <button key={l} type="button" data-lang={l} onClick={() => setLang(l)} aria-pressed={lang === l} lang={l}
-          className={`min-h-11 rounded-full px-2 text-xs font-bold transition-colors ${lang === l ? 'bg-magenta text-ink' : 'text-cream/70'}`}>
+          className={`min-h-11 rounded-full px-2 text-xs font-bold transition-colors ${lang === l ? 'bg-magenta text-cream' : 'text-cream/70'}`}>
           {LANG_NAMES[l]}
         </button>
       ))}
@@ -169,16 +166,16 @@ export function Header({ email, instagram, whatsapp }: { email: string; instagra
   return (
     <>
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-cream focus:px-4 focus:py-2 focus:text-ink">{t('nav.skip')}</a>
-      <header className={`fixed inset-x-0 top-0 z-50 transition-[background-color] duration-[var(--dur-base)] ${scrolled ? 'bg-ink/80 backdrop-blur-xl' : ''}`}>
+      <header className={`fixed inset-x-0 top-0 z-50 transition-[background-color] duration-[var(--dur-base)] ${scrolled ? 'bg-ink/80 backdrop-blur-xl' : 'bg-gradient-to-b from-ink/80 to-transparent'}`}>
         <div className="mx-auto flex h-16 max-w-[90rem] items-center justify-between gap-4 px-5 md:h-20 md:px-10">
           <Logo />
           <nav aria-label="Primary" className="hidden xl:block">
-            <ul className="flex items-center gap-1 rounded-full bg-ink-3/60 p-1 text-sm font-semibold ring-1 ring-cream/10 backdrop-blur">
+            <ul className="flex items-center gap-0.5 text-[13px] font-medium">
               {NAV.map((n) => (
                 <li key={n.id}>
-                  <a href={`#${n.id}`} aria-current={active === n.id ? 'true' : undefined}
-                    className={`relative inline-flex min-h-10 items-center rounded-full px-4 transition-colors ${active === n.id ? 'text-ink' : 'text-cream/85 hover:text-cream'}`}>
-                    {active === n.id && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-magenta shadow-[0_0_18px_rgb(8_198_197/.55)]" />}
+                  <a href={`/#${n.id}`} aria-current={active === n.id ? 'true' : undefined}
+                    className={`relative inline-flex min-h-10 items-center rounded-full px-3.5 transition-colors ${active === n.id ? 'text-ink' : 'text-cream/85 hover:text-cream'}`}>
+                    {active === n.id && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-lime shadow-[0_0_18px_rgb(173_217_244/.45)]" />}
                     {t(n.key)}
                   </a>
                 </li>
@@ -187,6 +184,9 @@ export function Header({ email, instagram, whatsapp }: { email: string; instagra
           </nav>
           <div className="flex items-center gap-2">
             <div className="hidden md:block"><LangMenu /></div>
+            <a href="/admin" className="hidden min-h-11 items-center gap-2 rounded-full bg-magenta px-5 text-sm font-semibold text-cream shadow-[0_8px_24px_-8px_rgb(154_3_30/.8)] transition-transform active:scale-95 md:inline-flex">
+              <Lock className="size-4" aria-hidden />{t('nav.admin')}
+            </a>
             <button ref={btnRef} type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-controls="mobile-menu" aria-label={t('nav.menu')}
               className="grid size-12 place-items-center rounded-full text-cream xl:hidden"><Menu className="size-7" aria-hidden /></button>
           </div>
@@ -196,7 +196,7 @@ export function Header({ email, instagram, whatsapp }: { email: string; instagra
       <AnimatePresence>
         {open && (
           <motion.div id="mobile-menu" ref={menuRef} role="dialog" aria-modal="true" aria-label={t('nav.menu')}
-            className="hero-bg fixed inset-0 z-[60] flex flex-col overflow-y-auto"
+            className="smoke fixed inset-0 z-[60] flex flex-col overflow-y-auto"
             initial={{ clipPath: 'circle(0% at 92% 4%)' }} animate={{ clipPath: 'circle(150% at 92% 4%)' }}
             exit={{ clipPath: 'circle(0% at 92% 4%)' }} transition={{ duration: dur.slow, ease: ease.inOut }}>
             <div aria-hidden className="stars pointer-events-none absolute inset-0 opacity-60" />
@@ -206,10 +206,10 @@ export function Header({ email, instagram, whatsapp }: { email: string; instagra
             </div>
             <nav aria-label="Mobile" className="relative flex-1 px-6 pt-4">
               <ol className="space-y-1">
-                {[...NAV.slice(0, 3), { id: 'services', key: 'nav.services' as Key }, NAV[3], { id: 'dance', key: 'nav.dance' as Key }, NAV[4], { id: 'skills', key: 'nav.skills' as Key }, { id: 'certificates', key: 'nav.certificates' as Key }, NAV[5]].map((n, i) => (
+                {[NAV[0], NAV[1], NAV[2], { id: 'services', key: 'nav.services' as Key }, NAV[3], NAV[5], NAV[4], NAV[6], { id: 'skills', key: 'nav.skills' as Key }, { id: 'certificates', key: 'nav.certificates' as Key }, NAV[7]].map((n, i) => (
                   <motion.li key={n.id} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.04, duration: dur.base, ease: ease.out }}>
-                    <a href={`#${n.id}`} onClick={() => setOpen(false)} className="flex min-h-13 items-baseline gap-4 py-1 font-display text-3xl">
-                      <span className="w-6 text-xs tabular-nums text-gold">0{i + 1}</span>{t(n.key)}
+                    <a href={`/#${n.id}`} onClick={() => setOpen(false)} className="flex min-h-13 items-baseline gap-4 py-1 font-display text-3xl">
+                      <span className="w-6 text-xs tabular-nums text-magenta">0{i + 1}</span>{t(n.key)}
                     </a>
                   </motion.li>
                 ))}
@@ -222,7 +222,7 @@ export function Header({ email, instagram, whatsapp }: { email: string; instagra
                   <a key={icon} href={href} aria-label={label} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
                     className="grid size-12 place-items-center rounded-full border border-cream/20 bg-ink/40"><Icon name={icon} /></a>
                 ))}
-                <a href="/admin" className="ms-auto inline-flex min-h-12 items-center gap-2 rounded-full bg-magenta px-5 text-sm font-bold text-ink"><Lock className="size-4" aria-hidden />{t('nav.admin')}</a>
+                <a href="/admin" className="ms-auto inline-flex min-h-12 items-center gap-2 rounded-full bg-magenta px-5 text-sm font-bold text-cream"><Lock className="size-4" aria-hidden />{t('nav.admin')}</a>
               </div>
             </div>
           </motion.div>

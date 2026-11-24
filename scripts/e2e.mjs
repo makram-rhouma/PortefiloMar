@@ -32,8 +32,8 @@ for (const width of [320, 360, 375, 390, 414, 430, 768, 1024, 1440]) {
     await page.evaluate(() => document.getElementById('gallery').scrollIntoView({ behavior: 'instant' })); await wait(700)
     check(await dock.isVisible(), `${width}px: bottom dock visible while scrolled`)
     check((await dock.locator('[aria-current]').textContent()) === 'Gallery', `${width}px: dock highlights the visible section`)
-    await dock.getByText('Journey').click(); await wait(1200)
-    check((await dock.locator('[aria-current]').textContent()) === 'Journey' && await page.evaluate(() => Math.abs(document.getElementById('journey').getBoundingClientRect().top) < 120), `${width}px: dock item scrolls to its section`)
+    await dock.getByText('Reviews').click(); await wait(1200)
+    check((await dock.locator('[aria-current]').textContent()) === 'Reviews' && await page.evaluate(() => Math.abs(document.getElementById('reviews').getBoundingClientRect().top) < 120), `${width}px: dock item scrolls to its section`)
     const dockOk = await page.evaluate(() => { scrollTo({ top: document.body.scrollHeight, behavior: "instant" }); return new Promise((r) => setTimeout(() => {
       const top = document.querySelector('nav[aria-label="Quick navigation"]').getBoundingClientRect().top
       const copy = [...document.querySelectorAll('footer p')].pop().getBoundingClientRect().bottom
@@ -124,6 +124,18 @@ for (const width of [320, 360, 375, 390, 414, 430, 768, 1024, 1440]) {
   check(/[ğışçöüİ]/.test(txt) && txt.includes('Çocuk'), 'TR: Turkish characters rendered in services')
   check(await page.locator('#certificates li').count() === 3, 'three certificates listed')
   check(await page.locator('#services li h3').count() === 4, 'four services listed')
+  await page.close()
+}
+
+// Reels page and review form (public, no admin needed)
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } })
+  const r = await page.goto(`${base}/reels`, { waitUntil: 'networkidle' }); await wait(1500)
+  check(r.status() === 200 && /Reels/.test(await page.locator('h1').first().textContent()), '/reels loads on direct visit')
+  await page.goto(base, { waitUntil: 'networkidle' }); await wait(1200)
+  await page.evaluate(() => document.getElementById('reviews').scrollIntoView({ behavior: 'instant' }))
+  await page.locator('#reviews button[aria-expanded]').first().click(); await wait(600)
+  check(await page.locator('#reviews textarea[name=content]').isVisible(), 'review form opens')
   await page.close()
 }
 

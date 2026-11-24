@@ -12,7 +12,7 @@ export function PressButton({ className = '', variant = 'solid', ...p }: Compone
         transition-[transform,box-shadow,background-color] duration-[var(--dur-fast)] ease-[var(--ease-out-expo)]
         active:translate-y-[2px] disabled:opacity-50 disabled:pointer-events-none
         ${variant === 'solid'
-          ? 'bg-cream text-ink shadow-[0_4px_0_0_var(--color-wine),0_10px_30px_-10px_rgb(8_198_197/.5)] active:shadow-[0_1px_0_0_var(--color-wine)]'
+          ? 'bg-cream text-ink shadow-[0_4px_0_0_var(--color-wine),0_10px_30px_-10px_rgb(154_3_30/.45)] active:shadow-[0_1px_0_0_var(--color-wine)]'
           : 'border border-cream/25 text-cream hover:bg-cream/10'} ${className}`}
     />
   )

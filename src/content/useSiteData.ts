@@ -10,6 +10,8 @@ export interface SiteData {
   education: d.Education[]
   services: d.Service[]
   certificates: d.Certificate[]
+  reels: d.Reel[]
+  testimonials: d.Testimonial[]
   skills: d.Skill[]
   languages: d.Language[]
   socials: d.SocialLink[]
@@ -18,7 +20,7 @@ export interface SiteData {
 }
 
 export const defaultData: SiteData = {
-  settings: d.settings, sections: d.sections, experiences: d.experiences, education: d.education, services: d.services, certificates: d.certificates,
+  settings: d.settings, sections: d.sections, experiences: d.experiences, education: d.education, services: d.services, certificates: d.certificates, reels: [], testimonials: [],
   skills: d.skills, languages: d.languages, socials: d.socials, portfolio: d.portfolio, translations: {},
 }
 
@@ -29,12 +31,14 @@ const list = async <T,>(table: string, fallback: T[]): Promise<T[]> => {
 }
 
 export async function loadSiteData(preview = false): Promise<SiteData> {
-  const [settingsRows, sectionRows, experiences, education, skills, languages, socials, portfolio, services, certificates] = await Promise.all([
+  const [settingsRows, sectionRows, experiences, education, skills, languages, socials, portfolio, services, certificates, reels, testimonials] = await Promise.all([
     supabase.from('site_settings').select('key,value'),
     supabase.from('portfolio_sections').select('key,content'),
     list('experiences', d.experiences), list('education', d.education), list('skills', d.skills),
     list('languages', d.languages), list('social_links', d.socials), list('portfolio_items', d.portfolio),
     list('services', d.services), list('certificates', d.certificates),
+    supabase.from('reels').select('*').eq('status', 'published').order('display_order').order('published_at', { ascending: false }),
+    supabase.from('testimonials').select('*').eq('moderation_status', 'approved').order('is_featured', { ascending: false }).order('display_order'),
   ])
   const settingsMap: Record<string, unknown> = Object.fromEntries((settingsRows.data ?? []).map((r) => [r.key, r.value]))
   const sectionMap: Record<string, unknown> = Object.fromEntries((sectionRows.data ?? []).map((r) => [r.key, r.content]))
@@ -47,6 +51,7 @@ export async function loadSiteData(preview = false): Promise<SiteData> {
     translations: (settingsMap.translations as SiteData['translations']) ?? {},
     sections: { ...d.sections, ...(sectionMap as Partial<d.Sections>) },
     experiences, education, skills, languages, socials, portfolio, services, certificates,
+    reels: (reels.data ?? []) as d.Reel[], testimonials: (testimonials.data ?? []) as d.Testimonial[],
   }
 }
 

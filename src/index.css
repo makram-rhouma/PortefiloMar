@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  /* Token names are inherited from the shared base; values are Meriem's palette. */
-  --color-ink: #071a2c;      /* deep navy */
-  --color-ink-2: #0a2438;
-  --color-ink-3: #07394a;    /* dark teal */
-  --color-plum: #07394a;
-  --color-wine: #07394a;
-  --color-wine-2: #052c3a;
-  --color-blush: #ddf6f2;    /* soft light teal */
-  --color-cream: #f5fafc;    /* white */
-  --color-mute: #9db4c3;
-  --color-magenta: #08c6c5;  /* turquoise (primary) */
-  --color-lime: #ffd447;     /* electric yellow */
-  --color-gold: #ffd447;
-  --color-lilac: #ff805d;    /* coral */
+  /* Official 5-colour palette. Token names come from the shared base; values are Meriem's brand. */
+  --color-ink: #070707;      /* black */
+  --color-ink-2: #121214;    /* black, raised surface */
+  --color-ink-3: #696d7d;    /* slate grey */
+  --color-plum: #696d7d;
+  --color-wine: #9a031e;     /* burgundy */
+  --color-wine-2: #6f0216;
+  --color-blush: #e4dfda;    /* beige */
+  --color-cream: #e4dfda;    /* beige as text on black */
+  --color-mute: #a3a5b0;     /* slate grey, lightened for text */
+  --color-magenta: #9a031e;  /* burgundy (primary) */
+  --color-lime: #add9f4;     /* light blue (accent) */
+  --color-gold: #add9f4;
+  --color-lilac: #add9f4;
   --font-display: "Playfair Display", "Noto Naskh Arabic", Georgia, serif;
-  --font-script: "Kaushan Script", "Aref Ruqaa", cursive;
+  --font-script: "Allura", "Aref Ruqaa", cursive;
   --font-sans: "Poppins", "Tajawal", system-ui, sans-serif;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -83,33 +83,34 @@ section[id] { scroll-margin-top: 4.5rem; }
 /* ── Mockup art direction ───────────────────────────────── */
 .hero-bg {
   background:
-    radial-gradient(45% 60% at 70% 20%, rgb(8 198 197 / .28), transparent 70%),
-    radial-gradient(40% 50% at 10% 80%, rgb(255 128 93 / .22), transparent 70%),
-    radial-gradient(35% 45% at 95% 90%, rgb(255 212 71 / .16), transparent 70%),
-    linear-gradient(180deg, #082338 0%, #071a2c 60%, #06192a 100%);
+    radial-gradient(40% 55% at 75% 25%, rgb(105 109 125 / .35), transparent 70%),
+    radial-gradient(35% 45% at 10% 90%, rgb(154 3 30 / .28), transparent 70%),
+    #070707;
 }
 .stage-bg {
   background:
-    radial-gradient(40% 55% at 20% 20%, rgb(130 80 255 / .35), transparent 70%),
-    radial-gradient(40% 55% at 80% 30%, rgb(8 198 197 / .3), transparent 70%),
-    radial-gradient(45% 50% at 50% 100%, rgb(255 128 93 / .25), transparent 70%),
-    #050f1c;
+    radial-gradient(40% 55% at 20% 20%, rgb(154 3 30 / .35), transparent 70%),
+    radial-gradient(40% 55% at 85% 40%, rgb(173 217 244 / .18), transparent 70%),
+    #070707;
 }
+/* beige editorial surface with a soft grain */
+.paper { background: radial-gradient(60% 80% at 90% 10%, rgb(173 217 244 / .35), transparent 60%), #e4dfda; color: #070707; }
+.smoke { background: radial-gradient(50% 70% at 70% 30%, rgb(105 109 125 / .45), transparent 70%), radial-gradient(40% 60% at 20% 80%, rgb(154 3 30 / .25), transparent 70%), #070707; }
 .stars { background-image: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent 51%), radial-gradient(1px 1px at 70% 20%, #fff6 50%, transparent 51%),
-  radial-gradient(1.5px 1.5px at 40% 80%, #ffd44799 50%, transparent 51%), radial-gradient(1px 1px at 85% 60%, #fff7 50%, transparent 51%),
-  radial-gradient(1px 1px at 10% 90%, #fff5 50%, transparent 51%), radial-gradient(1.5px 1.5px at 60% 55%, #08c6c599 50%, transparent 51%);
+  radial-gradient(1.5px 1.5px at 40% 80%, #add9f499 50%, transparent 51%), radial-gradient(1px 1px at 85% 60%, #fff7 50%, transparent 51%),
+  radial-gradient(1px 1px at 10% 90%, #fff5 50%, transparent 51%), radial-gradient(1.5px 1.5px at 60% 55%, #9a031e99 50%, transparent 51%);
   background-size: 340px 340px; }
 @utility fade-mask { mask-image: linear-gradient(to right, transparent, #000 22%, #000 78%, transparent), linear-gradient(to bottom, #000 72%, transparent); mask-composite: intersect; }
 @utility fade-mask-b { mask-image: linear-gradient(to bottom, #000 60%, transparent); }
 .brush { position: absolute; height: 18px; border-radius: 999px; filter: blur(.5px); transform: rotate(-18deg); opacity: .9; }
-.glow-teal { box-shadow: 0 0 0 2px var(--color-magenta), 0 0 28px rgb(8 198 197 / .5); }
+.glow-blue { box-shadow: 0 0 0 2px #add9f4, 0 0 30px rgb(173 217 244 / .55); }
 @utility tilt-r { clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%); }
 html[dir="rtl"] .lg\:tilt-r { clip-path: polygon(0 0, 93% 0, 100% 100%, 0 100%); }
 
 /* Admin content area: light theme from the mockup, by remapping the palette tokens */
 .admin-light {
-  --color-ink: #ffffff; --color-ink-2: #f2f8fa; --color-ink-3: #e2eef2;
-  --color-cream: #0b2233; --color-mute: #5d7484; --color-lime: #0b7f86; --color-lilac: #d4542f; --color-magenta: #0b7f86;
+  --color-ink: #ffffff; --color-ink-2: #f4f1ee; --color-ink-3: #e4dfda;
+  --color-cream: #070707; --color-mute: #696d7d; --color-lime: #9a031e; --color-lilac: #9a031e; --color-magenta: #9a031e;
   color-scheme: light;
 }
 .admin-light :is(input, textarea, select) { background: #fff; }

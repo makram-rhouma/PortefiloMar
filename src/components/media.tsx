@@ -41,7 +41,7 @@ export function VideoPlayer({ src, poster, title, className = '' }: { src: strin
       {!playing && <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent" />}
       <button type="button" onClick={toggle} aria-label={playing ? t('video.pause') : t('video.play')}
         className={`absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-cream text-ink
-          shadow-[0_0_0_8px_rgb(8_198_197/.25)] transition-[opacity,transform] duration-[var(--dur-base)] active:scale-90
+          shadow-[0_0_0_8px_rgb(154_3_30/.35)] transition-[opacity,transform] duration-[var(--dur-base)] active:scale-90
           ${playing ? 'opacity-0 focus-visible:opacity-100 group-hover:opacity-100' : ''}`}>
         <Icon name={playing ? 'pause' : 'play'} className="size-6" />
       </button>
@@ -129,7 +129,7 @@ export function QRCard({ url, label }: { url: string; label: string }) {
           <svg viewBox={`0 0 ${n + 4} ${n + 4}`} className="block w-full" shapeRendering="crispEdges" role="img" aria-label={`QR: ${url}`}>
             <rect width={n + 4} height={n + 4} fill="#f7f1ea" /><path d={cells} fill="#121014" />
           </svg>
-          <div aria-hidden className="scanline pointer-events-none absolute inset-x-4 top-4 h-1.5 rounded-full bg-magenta/70 shadow-[0_0_24px_6px_rgb(8_198_197/.45)]" />
+          <div aria-hidden className="scanline pointer-events-none absolute inset-x-4 top-4 h-1.5 rounded-full bg-lime/80 shadow-[0_0_24px_6px_rgb(173_217_244/.6)]" />
         </div>
       </div>
       <p className="mt-4 text-center font-display text-xl">{label}</p>

@@ -34,12 +34,12 @@ async function shoot(viewport, mobile, shots) {
   await ctx.close()
 }
 await shoot({ width: 1440, height: 900 }, false, [
-  ['', 'admin-desktop-overview'], ['media', 'admin-desktop-media'],
+  ['', 'admin-desktop-overview'], ['reels', 'admin-desktop-reels'], ['reviews', 'admin-desktop-reviews'], ['media', 'admin-desktop-media'],
   ['experiences', 'admin-desktop-experiences', (p) => p.locator('main li button[aria-expanded]').first().click()],
 ])
 await shoot({ width: 390, height: 844 }, true, [
   ['', 'admin-mobile-overview'], ['media', 'admin-mobile-media'],
-  ['content', 'admin-mobile-content'],
+  ['reels', 'admin-mobile-reels'], ['comments', 'admin-mobile-comments'],
   ['', 'admin-mobile-drawer', (p) => p.locator('header button[aria-expanded]').click()],
 ])
 await b.close()

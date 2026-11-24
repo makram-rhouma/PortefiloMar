@@ -71,8 +71,8 @@ function useRows(table: string) {
   return { rows, setRows, loading, error, load }
 }
 
-const card = 'rounded-2xl bg-ink ring-1 ring-black/5 shadow-[0_1px_2px_rgb(0_0_0/.04),0_10px_30px_-16px_rgb(29_15_43/.25)]'
-const pill = (live: boolean) => `rounded-full px-2 py-0.5 text-[11px] font-semibold ${live ? 'bg-[#e7f8ee] text-[#15803d]' : 'bg-black/5 text-[#6b5f73]'}`
+export const card = 'rounded-2xl bg-ink ring-1 ring-black/5 shadow-[0_1px_2px_rgb(0_0_0/.04),0_10px_30px_-16px_rgb(29_15_43/.25)]'
+export const pill = (live: boolean) => `rounded-full px-2 py-0.5 text-[11px] font-semibold ${live ? 'bg-[#e7f8ee] text-[#15803d]' : 'bg-black/5 text-[#6b5f73]'}`
 
 function RowCard({ row, fields, table, onSaved, onDelete, preview, extra, tile = false }: {
   row: Row; fields: Field[]; table: string; onSaved: (r: Row) => void; onDelete: () => Promise<void>; preview?: ReactNode; extra?: ReactNode; tile?: boolean
@@ -358,7 +358,7 @@ const DOC_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp']
 const pathFromUrl = (u?: unknown) => (typeof u === 'string' && u.includes(`/object/public/${BUCKET}/`) ? decodeURIComponent(u.split(`/object/public/${BUCKET}/`)[1]) : null)
 
 /** Upload with progress (XHR, since fetch has no upload progress). */
-async function uploadFile(file: Blob, path: string, type: string, onProgress: (p: number) => void) {
+export async function uploadFile(file: Blob, path: string, type: string, onProgress: (p: number) => void) {
   const { data } = await supabase.auth.getSession()
   const token = data.session?.access_token
   if (!token) throw new Error('Not signed in')
@@ -380,7 +380,7 @@ async function uploadFile(file: Blob, path: string, type: string, onProgress: (p
 }
 
 /** Grabs a frame from a local video file to use as its poster. */
-function videoPoster(file: File): Promise<Blob | null> {
+export function videoPoster(file: File): Promise<Blob | null> {
   return new Promise((resolve) => {
     const v = document.createElement('video')
     v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = URL.createObjectURL(file)
@@ -395,7 +395,7 @@ function videoPoster(file: File): Promise<Blob | null> {
   })
 }
 
-async function storeMedia(file: File, onProgress: (p: number) => void, allowed = ALLOWED) {
+export async function storeMedia(file: File, onProgress: (p: number) => void, allowed = ALLOWED) {
   if (!allowed.includes(file.type)) throw new Error('admin.fileType')
   if (file.size > MAX) throw new Error('admin.fileTooLarge')
   const base = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}`
@@ -410,7 +410,7 @@ async function storeMedia(file: File, onProgress: (p: number) => void, allowed =
   return { kind: isVideo ? 'video' : 'image', src, poster, thumb: poster ?? src }
 }
 
-async function removeStored(urls: unknown[]) {
+export async function removeStored(urls: unknown[]) {
   const paths = urls.map(pathFromUrl).filter((p): p is string => !!p)
   if (!paths.length) return
   const { error } = await supabase.storage.from(BUCKET).remove(paths)
@@ -613,6 +613,7 @@ export function Overview() {
     void Promise.all([
       q('items', 'portfolio_items'), q('videos', 'portfolio_items', ['kind', 'video']), q('photos', 'portfolio_items', ['kind', 'image']),
       q('live', 'portfolio_items', ['visible', true]), q('drafts', 'portfolio_items', ['visible', false]), q('messages', 'contact_messages', ['archived', false]),
+      q('reels', 'reels'), q('pendingComments', 'reel_comments', ['moderation_status', 'pending']), q('pendingReviews', 'testimonials', ['moderation_status', 'pending']),
     ]).then((r) => setCounts(Object.fromEntries(r)))
     // Recent activity = latest edited rows across content tables
     void Promise.all([
@@ -629,16 +630,17 @@ export function Overview() {
     ['items', 'admin.mediaItems', 'bg-[#e1f7f6] text-[#0b7f86]'], ['videos', 'admin.videos', 'bg-[#ede8ff] text-[#5b3fd1]'],
     ['photos', 'admin.photos', 'bg-[#fff1e6] text-[#d4542f]'], ['live', 'admin.live', 'bg-[#e7f8ee] text-[#15803d]'],
     ['drafts', 'admin.drafts', 'bg-[#f1f3f5] text-[#5d7484]'], ['messages', 'admin.messages', 'bg-[#fff9db] text-[#a16207]'],
+    ['reels', 'admin.reels', 'bg-[#fde8eb] text-[#9a031e]'], ['pendingComments', 'admin.pendingComments', 'bg-[#fff6dd] text-[#8a6100]'], ['pendingReviews', 'admin.pendingReviews', 'bg-[#fff6dd] text-[#8a6100]'],
   ]
   const ago = (iso: string) => {
     const m = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60000))
     return new Intl.RelativeTimeFormat(document.documentElement.lang, { numeric: 'auto' }).format(-(m < 60 ? m : m < 1440 ? Math.round(m / 60) : Math.round(m / 1440)), m < 60 ? 'minute' : m < 1440 ? 'hour' : 'day')
   }
-  const quick: [string, Key][] = [['/admin/media', 'admin.addPhoto'], ['/admin/media', 'admin.addVideo'], ['/admin/content', 'admin.editContent']]
+  const quick: [string, Key][] = [['/admin/reels', 'admin.createReel'], ['/admin/comments', 'admin.pendingComments'], ['/admin/reviews', 'admin.pendingReviews'], ['/admin/media', 'admin.addPhoto'], ['/admin/content', 'admin.editContent']]
   return (
     <Page title={t('admin.overview')}>
       <p className="-mt-4 mb-6 text-sm text-mute">{t('admin.manage')}</p>
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
         {cards.map(([tb, k, tone]) => (
           <li key={tb} className="rounded-2xl border border-ink-3 bg-ink p-4 text-center shadow-sm">
             <span className={`mx-auto grid size-12 place-items-center rounded-full text-lg font-bold ${tone}`}>{counts[tb] ?? '…'}</span>

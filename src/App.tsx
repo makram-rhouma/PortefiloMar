@@ -3,7 +3,7 @@ import { Header, Loader } from './components/chrome'
 import { MobileDock } from './components/MobileDock'
 import { useSiteData } from './content/useSiteData'
 import { I18nProvider } from './i18n/I18n'
-import { AboutJourney, Activities, Certificates, Contact, Dance, Footer, GallerySkills, Hero, Services } from './site/Sections'
+import { AboutJourney, Activities, Contact, Footer, Gallery, Hero, ReelsStrip, Reviews, SkillsCertificates } from './site/Sections'
 
 export default function App() {
   const data = useSiteData()
@@ -13,14 +13,14 @@ export default function App() {
       <MotionConfig reducedMotion="user">
         <Loader />
         <Header email={s.email} instagram={s.instagram} whatsapp={s.whatsapp} />
-        <main id="main" className="hero-bg">
+        <main id="main" className="bg-ink">
           <Hero data={data} />
           <AboutJourney data={data} />
-          <Services data={data} />
-          <Activities />
-          <Dance data={data} />
-          <GallerySkills data={data} />
-          <Certificates data={data} />
+          <Activities data={data} />
+          <ReelsStrip data={data} />
+          <Gallery data={data} />
+          <SkillsCertificates data={data} />
+          <Reviews data={data} />
           <Contact data={data} />
         </main>
         <Footer data={data} />

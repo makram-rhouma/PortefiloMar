@@ -6,6 +6,8 @@ import App from './App.tsx'
 
 const router = createBrowserRouter([
   { path: '/', element: <App /> },
+  { path: '/reels', lazy: async () => ({ Component: (await import('./reels/ReelsPage.tsx')).default }) },
+  { path: '/reels/:id', lazy: async () => ({ Component: (await import('./reels/ReelsPage.tsx')).default }) },
   { path: '/admin/*', lazy: async () => ({ Component: (await import('./admin/Admin.tsx')).default }) },
   { path: '*', element: <App /> },
 ])
