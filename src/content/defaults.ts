@@ -33,7 +33,7 @@ export interface PortfolioItem {
 const m = (en: string, fr: string, ar: string, tr: string): ML => ({ en, fr, ar, tr })
 const empty = m('', '', '', '')
 
-export const SITE_URL_FALLBACK = 'https://portefilomariemproject.netlify.app'
+export const SITE_URL_FALLBACK = 'https://mariem-jabalha.netlify.app'
 
 export const settings: Settings = {
   siteUrl: import.meta.env?.VITE_PUBLIC_SITE_URL || SITE_URL_FALLBACK,

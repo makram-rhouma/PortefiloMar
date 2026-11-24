@@ -1,9 +1,8 @@
--- Replace ADMIN_EMAIL@example.com (every occurrence) with Meriem's admin email before running.
 -- Optional self-check of the admin write path through RLS. Run AFTER admin_setup.sql.
 -- Everything is rolled back: no data is changed.
 begin;
 select set_config('request.jwt.claims',
-  json_build_object('sub', (select id from auth.users where email = 'ADMIN_EMAIL@example.com'), 'role', 'authenticated')::text, true);
+  json_build_object('sub', (select id from auth.users where email = 'mariem.jabalha@gmail.com'), 'role', 'authenticated')::text, true);
 set local role authenticated;
 do $$
 declare n int;

@@ -8,7 +8,7 @@ const REF = 'hxoswnpscqpzjwqeyiox'
 const KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || ''
 const b64 = (o) => Buffer.from(JSON.stringify(o)).toString('base64url')
 const exp = Math.floor(Date.now() / 1000) + 3600 * 24
-const user = { id: '00000000-0000-4000-8000-000000000001', aud: 'authenticated', role: 'authenticated', email: 'ADMIN_EMAIL@example.com', app_metadata: {}, user_metadata: {} }
+const user = { id: '00000000-0000-4000-8000-000000000001', aud: 'authenticated', role: 'authenticated', email: 'mariem.jabalha@gmail.com', app_metadata: {}, user_metadata: {} }
 const token = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64({ sub: user.id, role: 'authenticated', exp, email: user.email })}.sig`
 const session = { access_token: token, refresh_token: 'x', token_type: 'bearer', expires_in: 86400, expires_at: exp, user }
 

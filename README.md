@@ -1,6 +1,6 @@
 # Meriem Jaballah — Portfolio & CMS
 
-Repo: https://github.com/makram-rhouma/PortefiloMar · Production: https://portefilomariemproject.netlify.app
+Repo: https://github.com/makram-rhouma/PortefiloMar · Production: https://mariem-jabalha.netlify.app
 
 Multilingual (EN · FR · AR/RTL · TR) personal portfolio with an admin CMS at `/admin`.
 Stack: React 19 + TypeScript + Vite + Tailwind CSS 4 + Framer Motion + Supabase (Auth, Postgres, Storage). Hosted on Netlify.
@@ -38,8 +38,8 @@ Run in Dashboard → SQL Editor, in order (idempotent, never drops data):
 Security: visitors read visible rows only and can only insert contact messages; every write is checked in the database by RLS (`is_admin()`), never by the frontend alone.
 
 ### Admin account
-1. Dashboard → Authentication → Users → Add user (Meriem's email, a strong password, “Auto confirm user”). No user becomes admin automatically.
-2. Replace `ADMIN_EMAIL@example.com` in `supabase/admin_setup.sql`, run it: expect `is_admin = true`.
+1. Dashboard → Authentication → Users → Add user (mariem.jabalha@gmail.com, a strong password, “Auto confirm user”). No user becomes admin automatically.
+2. Run `supabase/admin_setup.sql` (admin email: mariem.jabalha@gmail.com): expect `is_admin = true`.
 3. Optional: `supabase/admin_check.sql` (same email) — rolled-back RLS self-check, expect “All admin checks passed”.
 4. Password recovery: “Forgot password?” on `/admin` sends a Supabase reset link (Authentication → URL Configuration must list the production URL).
 
@@ -48,5 +48,5 @@ Security: visitors read visible rows only and can only insert contact messages; 
 - Certificates: no document is invented. Real PDFs/images are uploaded per certificate from Admin → Certificates.
 - Phone, email, WhatsApp and social links are not in the CV: they stay empty until set in Admin → Site settings / Social links.
 
-## Deploy (Netlify project `portefilomariemproject`)
+## Deploy (Netlify project `mariem-jabalha`)
 `netlify.toml`: build `npm run build`, publish `dist`, Node 22, SPA fallback (so `/admin` survives a refresh), cache headers. Deploys from the GitHub repo once linked (Project configuration → Build & deploy → Link repository).
