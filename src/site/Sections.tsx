@@ -1,7 +1,7 @@
 import { animate, AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import {
   ArrowRight, Award, Baby, CalendarDays, Check, ChevronLeft, ChevronRight, Download, Eye, FileText, Globe2, Heart, Medal,
-  Music, Phone, Play, Quote, Send, Sparkles, Star, Trophy, Users, Volleyball,
+  Music, Phone, Play, Quote, Send, Sparkles, Star, Trophy, Users, Volleyball, Volume2, VolumeX,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -73,6 +73,29 @@ export function channels(s: SiteData['settings'], socials: SiteData['socials'], 
 }
 const ChannelIcon = ({ name }: { name: string }) => (name === 'phone' ? <Phone className="size-5" aria-hidden /> : <Icon name={name} />)
 
+/** Motion-design logo intro (MJ, 10 s): muted loop by default, sound on demand. */
+function IntroVideo() {
+  const { t } = useI18n()
+  const reduce = useReducedMotion()
+  const v = useRef<HTMLVideoElement>(null)
+  const [muted, setMuted] = useState(true)
+  const toggle = () => {
+    const el = v.current; if (!el) return
+    el.muted = !muted; setMuted(!muted)
+    if (muted) { el.currentTime = 0; void el.play() }
+  }
+  return (
+    <div className="absolute start-3 top-3 z-10 w-24 overflow-hidden rounded-2xl shadow-2xl ring-1 ring-cream/25 sm:w-28 lg:start-[-8%] lg:top-auto lg:bottom-[16%] lg:w-36">
+      <video ref={v} src="/media/intro/mj-intro.mp4" poster="/media/intro/mj-intro-poster.webp" autoPlay={!reduce} muted={muted} loop playsInline preload="metadata"
+        aria-label={t('hero.intro')} className="aspect-[9/16] w-full bg-ink object-cover" />
+      <button type="button" onClick={toggle} aria-pressed={!muted} aria-label={muted ? t('hero.soundOn') : t('hero.soundOff')}
+        className="absolute bottom-1.5 end-1.5 grid size-9 place-items-center rounded-full bg-ink/70 text-cream backdrop-blur transition hover:bg-magenta focus-visible:outline-2 focus-visible:outline-lime">
+        {muted ? <VolumeX className="size-4" aria-hidden /> : <Volume2 className="size-4" aria-hidden />}
+      </button>
+    </div>
+  )
+}
+
 export function Hero({ data }: { data: SiteData }) {
   const { ml, t } = useI18n()
   const reduce = useReducedMotion()
@@ -88,6 +111,7 @@ export function Hero({ data }: { data: SiteData }) {
         <img src="/media/illus/dancer-hero.webp" alt={t('illus.alt')} fetchPriority="high"
           className="h-full w-full object-cover object-[50%_20%] [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] lg:[mask-image:linear-gradient(to_right,transparent,#000_25%,#000_85%,transparent),linear-gradient(to_bottom,#000_75%,transparent)] lg:[mask-composite:intersect]" />
         <IllusTag top />
+        <IntroVideo />
       </motion.figure>
       <div className={`${wrap} relative -mt-36 grid pb-10 lg:mt-0 lg:min-h-[44rem] lg:items-center lg:pb-16`}>
         <div className="relative z-10 lg:max-w-[52%]">
