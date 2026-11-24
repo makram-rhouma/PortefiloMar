@@ -139,25 +139,25 @@ export const education: Education[] = []
 const tags = (en: string[], fr: string[], ar: string[], tr: string[]): MLList => ({ en, fr, ar, tr })
 export const services: Service[] = [
   {
-    id: 'animation', image: '/media/illus/kids-line.webp', sort_order: 1, visible: true,
+    id: 'animation', image: '/media/illus/svc-animation.webp', sort_order: 1, visible: true,
     title: m('Kids Animation & Entertainment', 'Animation & divertissement enfants', 'تنشيط الأطفال والترفيه', 'Çocuk Animasyonu ve Eğlence'),
     description: m('Themed games, mini-disco, birthdays and celebrations that keep every child engaged and safe.', 'Jeux à thème, mini-disco, anniversaires et fêtes où chaque enfant s’amuse en toute sécurité.', 'ألعاب بطابع خاص وميني ديسكو وأعياد ميلاد واحتفالات يشارك فيها كل طفل بأمان.', 'Her çocuğun güvenle eğlendiği temalı oyunlar, mini disko, doğum günleri ve kutlamalar.'),
     tags: tags(['Activity planning', 'Mini-disco', 'Group management'], ['Planification d’activités', 'Mini-disco', 'Gestion de groupe'], ['تخطيط الأنشطة', 'ميني ديسكو', 'إدارة المجموعات'], ['Aktivite planlama', 'Mini disko', 'Grup yönetimi']),
   },
   {
-    id: 'baby-gym', image: '/media/illus/baby-gym-mat.webp', sort_order: 2, visible: true,
+    id: 'baby-gym', image: '/media/illus/svc-baby-gym.webp', sort_order: 2, visible: true,
     title: m('Baby Gymnastics & Baby Sports', 'Baby gym & baby sport', 'جمباز الصغار ورياضة الصغار', 'Bebek Jimnastiği ve Bebek Sporları'),
     description: m('Playful first movements on safe equipment: motor skills, rhythm and confidence from the very first steps.', 'Premiers mouvements ludiques sur du matériel sécurisé : motricité, rythme et confiance dès les premiers pas.', 'حركات أولى ممتعة على معدات آمنة: مهارات حركية وإيقاع وثقة منذ الخطوات الأولى.', 'Güvenli ekipmanlarla eğlenceli ilk hareketler: ilk adımlardan itibaren motor beceri, ritim ve özgüven.'),
     tags: tags(['Baby gymnastics', 'Baby basketball', 'Child safety'], ['Baby gym', 'Baby basket', 'Sécurité des enfants'], ['جمباز الصغار', 'كرة السلة للصغار', 'سلامة الأطفال'], ['Bebek jimnastiği', 'Bebek basketbolu', 'Çocuk güvenliği']),
   },
   {
-    id: 'kids-coaching', image: '/media/illus/kids-basketball.webp', sort_order: 3, visible: true,
+    id: 'kids-coaching', image: '/media/illus/svc-coaching.webp', sort_order: 3, visible: true,
     title: m('Children’s Gymnastics & Sports Coaching', 'Gymnastique & coaching sportif enfants', 'جمباز الأطفال والتدريب الرياضي', 'Çocuk Jimnastiği ve Spor Koçluğu'),
     description: m('Balance, flexibility, coordination and strength, taught step by step with safe spotting.', 'Équilibre, souplesse, coordination et force, enseignés pas à pas avec une parade sécurisée.', 'التوازن والمرونة والتناسق والقوة، تُعلَّم خطوة بخطوة مع مساندة آمنة.', 'Denge, esneklik, koordinasyon ve güç; güvenli spotlama ile adım adım öğretilir.'),
     tags: tags(['Kids gymnastics', 'Progress tracking', 'Shows & demos'], ['Gymnastique enfants', 'Suivi des progrès', 'Galas & démonstrations'], ['جمباز الأطفال', 'متابعة التقدّم', 'عروض واستعراضات'], ['Çocuk jimnastiği', 'Gelişim takibi', 'Gösteriler']),
   },
   {
-    id: 'dance', image: '/media/illus/stage-dance.webp', sort_order: 4, visible: true,
+    id: 'dance', image: '/media/illus/svc-dance.webp', sort_order: 4, visible: true,
     title: m('Dance & LED Performance', 'Danse & spectacles LED', 'الرقص وعروض LED', 'Dans ve LED Gösterileri'),
     description: m('LED, high-heels and themed shows for hotels and events, with fast choreography learning and stage presence.', 'Spectacles LED, high heels et à thème pour hôtels et événements, avec apprentissage rapide et présence scénique.', 'عروض LED والكعب العالي وعروض بطابع خاص للفنادق والفعاليات، مع تعلّم سريع للرقصات وحضور مسرحي.', 'Oteller ve etkinlikler için LED, topuklu ve temalı gösteriler; hızlı koreografi öğrenimi ve sahne varlığı.'),
     tags: tags(['LED shows', 'High-heels', 'Choreography'], ['Spectacles LED', 'High heels', 'Chorégraphie'], ['عروض LED', 'الكعب العالي', 'تصميم الرقصات'], ['LED gösterileri', 'Topuklu dans', 'Koreografi']),
@@ -216,19 +216,17 @@ const visual = (id: string, category: Category, sort_order: number, title: ML): 
   id, kind: 'image', src: `/media/illus/${id}.webp`, thumb: `/media/illus/${id}-sm.webp`, poster: null, title,
   description: empty, caption: title, category, sort_order, featured: false, visible: true, is_illustration: true,
 })
+const sharp = (id: string, file: string, category: Category, sort_order: number, title: ML): PortfolioItem => ({
+  id, kind: 'image', src: `/media/illus/${file}.webp`, thumb: `/media/illus/${file}-sm.webp`, poster: null, title,
+  description: empty, caption: title, category, sort_order, featured: false, visible: true, is_illustration: true,
+})
+// Only sharp visuals (large mockup areas); the old tiny-crop upscales are hidden in the database (migration 000004).
 export const portfolio: PortfolioItem[] = [
-  visual('kids-basketball', 'kids-basketball', 1, m('Baby basketball', 'Baby basket', 'كرة السلة للصغار', 'Bebek basketbolu')),
-  visual('baby-gym-mat', 'baby-gym', 2, m('Baby gymnastics', 'Baby gym', 'جمباز الصغار', 'Bebek jimnastiği')),
-  visual('kids-group', 'animation', 3, m('Group activity', 'Activité de groupe', 'نشاط جماعي', 'Grup etkinliği')),
-  visual('stage-heels', 'heels', 4, m('High-heels performance', 'Performance high heels', 'عرض الكعب العالي', 'Topuklu dans gösterisi')),
-  visual('kids-gym-group', 'kids-sports', 5, m('Kids gymnastics group', 'Groupe de gymnastique enfants', 'مجموعة جمباز الأطفال', 'Çocuk jimnastiği grubu')),
-  visual('baby-gym', 'baby-gym', 6, m('First movements', 'Premiers mouvements', 'الحركات الأولى', 'İlk hareketler')),
-  visual('stage-led', 'led', 7, m('LED stage show', 'Spectacle LED', 'عرض LED على المسرح', 'LED sahne gösterisi')),
-  visual('stage-group', 'dance', 9, m('Group dance show', 'Spectacle de danse en groupe', 'عرض رقص جماعي', 'Grup dans gösterisi')),
-  visual('studio-coach', 'kids-sports', 10, m('Studio session with kids', 'Séance en studio avec les enfants', 'حصة مع الأطفال في الاستوديو', 'Çocuklarla stüdyo dersi')),
-  visual('stage-dance', 'led', 11, m('Stage lights', 'Sous les projecteurs', 'تحت الأضواء', 'Sahne ışıkları')),
-  visual('kids-line', 'animation', 12, m('Kids line-up', 'Les enfants en ligne', 'الأطفال في صف', 'Sıraya dizilen çocuklar')),
-  visual('floor-stretch', 'kids-sports', 13, m('Warm-up and stretching', 'Échauffement et étirements', 'الإحماء والتمدد', 'Isınma ve esneme')),
-  visual('coach-kids', 'animation', 14, m('Dance with the kids', 'Danser avec les enfants', 'الرقص مع الأطفال', 'Çocuklarla dans')),
-  visual('hero-coach', 'kids-sports', 8, m('Coaching with a high five', 'Coaching et encouragements', 'التدريب والتشجيع', 'Çak bir beşlik: koçluk')),
+  sharp('g-dancer-hero', 'svc-dance', 'dance', 1, m('Dance performance', 'Performance de danse', 'عرض رقص', 'Dans gösterisi')),
+  sharp('g-coaching', 'svc-baby-gym', 'kids-sports', 2, m('High five after the exercise', 'Bravo après l’exercice', 'تشجيع بعد التمرين', 'Egzersiz sonrası çak bir beşlik')),
+  sharp('g-kids-cheer', 'g-kids-cheer', 'animation', 3, m('Happy kids', 'Des enfants heureux', 'أطفال سعداء', 'Mutlu çocuklar')),
+  sharp('g-class-dance', 'g-class-dance', 'dance', 4, m('Dance class with kids', 'Cours de danse avec les enfants', 'حصة رقص مع الأطفال', 'Çocuklarla dans dersi')),
+  sharp('g-animation', 'svc-animation', 'animation', 5, m('Group activity', 'Activité de groupe', 'نشاط جماعي', 'Grup etkinliği')),
+  sharp('g-portrait', 'dancer-portrait', 'events', 6, m('Stage smile', 'Sourire de scène', 'ابتسامة على المسرح', 'Sahne gülümsemesi')),
+  visual('hero-coach', 'kids-sports', 7, m('Coaching with a high five', 'Coaching et encouragements', 'التدريب والتشجيع', 'Çak bir beşlik: koçluk')),
 ]

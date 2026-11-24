@@ -92,9 +92,9 @@ for (const width of [320, 360, 375, 390, 414, 430, 768, 1024, 1440]) {
   const more0 = page.locator('#gallery button[aria-expanded="false"]')
   if (await more0.count()) { await more0.first().click(); await wait(600) }
   const all = await page.locator('#gallery li').count()
-  await page.locator('#gallery [aria-pressed]', { hasText: 'Baby Gymnastics' }).click(); await wait(600)
+  await page.locator('#gallery [aria-pressed]', { hasText: 'Dance' }).click(); await wait(600)
   const fit = await page.locator('#gallery li').count()
-  check(all > fit && fit > 0 && fit <= 5, `gallery filter + view all (all ${all} -> baby gym ${fit})`)
+  check(all > fit && fit > 0 && fit <= 5, `gallery filter + view all (all ${all} -> dance ${fit})`)
   await page.locator('#gallery li button').first().click(); await wait(600)
   check(await page.getByRole('dialog').isVisible(), 'lightbox opens')
   await page.keyboard.press('ArrowRight'); await wait(400)
