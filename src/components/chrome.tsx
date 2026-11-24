@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ChevronDown, Globe, Lock, Menu, X } from 'lucide-react'
+import { ChevronDown, Globe, Lock, Menu, Volume2, VolumeX, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { LANGS } from '../content/defaults'
 import { useI18n } from '../i18n/I18n'
@@ -39,27 +39,37 @@ export function Logo({ className = '' }: { className?: string }) {
   )
 }
 
-/** Loader: the crown is traced, then the page reveals. Once per visit. */
+/** Opening intro: the MJ motion-design video (10 s), once per visit, muted by default (browsers block autoplay with sound). */
 export function Loader() {
   const reduce = useReducedMotion()
   const { t } = useI18n()
+  const v = useRef<HTMLVideoElement>(null)
   const [show, setShow] = useState(() => !reduce && !sessionStorage.getItem('sj-loaded'))
+  const [muted, setMuted] = useState(true)
+  const close = () => setShow(false)
   useEffect(() => {
     if (!show) return
     sessionStorage.setItem('sj-loaded', '1')
-    const id = setTimeout(() => setShow(false), 1600)
+    const id = setTimeout(close, 14000) // safety net if the video never ends (slow network, blocked playback)
     return () => clearTimeout(id)
   }, [show])
+  const toggleSound = () => {
+    const el = v.current; if (!el) return
+    el.muted = !muted; setMuted(!muted)
+  }
+  const btn = 'grid min-h-11 place-items-center rounded-full bg-ink/70 px-4 text-sm font-semibold text-cream ring-1 ring-cream/25 backdrop-blur transition hover:bg-magenta focus-visible:outline-2 focus-visible:outline-lime'
   return (
     <AnimatePresence>
       {show && (
-        <motion.div role="status" aria-label={t('loader.label')} className="hero-bg fixed inset-0 z-[100] grid place-items-center"
-          exit={{ clipPath: 'inset(0 0 100% 0)' }} transition={{ duration: dur.slow, ease: ease.inOut }}>
-          <div className="grid place-items-center gap-2">
-            <svg viewBox="0 0 48 32" className="w-20" fill="none" stroke="#9a031e" strokeWidth="2" strokeLinejoin="round">
-              <motion.path d="M5 28 3 7l11 9 10-13 10 13 11-9-2 21z" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2, ease: ease.inOut }} />
-            </svg>
-            <Signature className="text-5xl" />
+        <motion.div role="dialog" aria-label={t('hero.intro')} className="fixed inset-0 z-[100] grid place-items-center bg-ink"
+          exit={{ opacity: 0 }} transition={{ duration: dur.slow, ease: ease.inOut }}>
+          <video ref={v} src="/media/intro/mj-intro.mp4" poster="/media/intro/mj-intro-poster.webp" autoPlay muted={muted} playsInline preload="auto"
+            onEnded={close} onError={close} className="h-full max-h-svh w-full object-contain" />
+          <div className="absolute inset-x-0 bottom-0 flex justify-between gap-3 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <button type="button" onClick={toggleSound} aria-pressed={!muted} aria-label={muted ? t('hero.soundOn') : t('hero.soundOff')} className={`${btn} !px-0 size-11`}>
+              {muted ? <VolumeX className="size-5" aria-hidden /> : <Volume2 className="size-5" aria-hidden />}
+            </button>
+            <button type="button" onClick={close} className={btn}>{t('loader.skip')}</button>
           </div>
         </motion.div>
       )}
